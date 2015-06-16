@@ -36,6 +36,7 @@ namespace Deskt.op.View
             delegateSetURI.BeginInvoke(null, null);
 
             InitializeComponent();
+            this.FormClosing += MainForm_FormClosing;
 
             materialSkinManager = MaterialSkinManager.Instance;
             materialSkinManager.AddFormToManage(this);
@@ -79,6 +80,22 @@ namespace Deskt.op.View
             delegateSetWallPaper.BeginInvoke(null, null);
             delegateSetURI.BeginInvoke(null, null);
             timer.Stop(); 
+        }
+
+        private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            if (e.CloseReason == CloseReason.UserClosing)
+            {
+                this.Hide();
+                e.Cancel = true;
+                this.notifyIcon.Visible = true;
+            }
+        }
+
+        private void notifyIcon1_MouseDoubleClick(object sender, MouseEventArgs e)
+        {
+            Show();
+            WindowState = FormWindowState.Normal;
         }
     }
 }
