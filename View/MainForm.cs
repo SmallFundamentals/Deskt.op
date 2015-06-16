@@ -9,20 +9,18 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 
 using MaterialSkin;
-using MaterialSkin.Animations;
 using MaterialSkin.Controls;
 
-using Deskt.op;
-using Deskt.op.Wallpaper;
-
+using Deskt.op.Util;
 
 namespace Deskt.op.View
 {
     public partial class MainForm : MaterialForm
     {
         private readonly MaterialSkinManager materialSkinManager;
+        private readonly SplashBaseWallpaperManager wallpaperManager;
         private delegate void AsyncSetWallpaper();
-        private AsyncSetWallpaper delly;
+        private AsyncSetWallpaper delegateSetWallPaper;
 
         public MainForm()
         {
@@ -31,20 +29,27 @@ namespace Deskt.op.View
             materialSkinManager = MaterialSkinManager.Instance;
             materialSkinManager.AddFormToManage(this);
             materialSkinManager.Theme = MaterialSkinManager.Themes.LIGHT;
-            materialSkinManager.ColorScheme = new ColorScheme(Primary.BlueGrey800, Primary.BlueGrey900, Primary.BlueGrey500, Accent.LightBlue200, TextShade.WHITE);
+            materialSkinManager.ColorScheme = new ColorScheme(
+                Primary.BlueGrey800, 
+                Primary.BlueGrey900, 
+                Primary.BlueGrey500, 
+                Accent.LightBlue200, 
+                TextShade.WHITE);
 
-            delly = new AsyncSetWallpaper(this.SetWallpaper);
-        }
+            delegateSetWallPaper = this.SetWallpaper;
 
-        private void materialFlatButton1_Click(object sender, EventArgs e)
-        {
-            delly.BeginInvoke(null, null);
+            wallpaperManager = new SplashBaseWallpaperManager();
         }
 
         private void SetWallpaper()
         {
-            var uri = new Uri("https://download.unsplash.com/photo-1431184052543-809fa8cc9bd6");
-            Wallpaper.DesktopWallpaper.Set(uri, Wallpaper.DesktopWallpaper.Style.Fill);
+            var uri = new Uri(wallpaperManager.GetNextRandomUrl());
+            DesktopWallpaper.Set(uri, DesktopWallpaper.Style.Fill);
+        }
+
+        private void materialFlatButton1_Click(object sender, EventArgs e)
+        {
+            delegateSetWallPaper.BeginInvoke(null, null);
         }
     }
 }
