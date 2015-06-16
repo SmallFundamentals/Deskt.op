@@ -67,12 +67,12 @@ namespace Deskt.op.Util
         
         private Dictionary<Sources, string> SourceToStringDict = new Dictionary<Sources, string>
         {
-            { Sources.travelcoffeebook, "travelcoffeebook" },
+            /*{ Sources.travelcoffeebook, "travelcoffeebook" },
             { Sources.getrefe, "getrefe" },
             { Sources.jaymantri, "jaymantri" },
             { Sources.snapographic, "snapographic" },
             { Sources.splitshire, "splitshire" },
-            { Sources.lifeofpix, "lifeofpix"},
+            { Sources.lifeofpix, "lifeofpix"},*/
             { Sources.unsplash, "unsplash"}
         };
 

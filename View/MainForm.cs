@@ -20,10 +20,21 @@ namespace Deskt.op.View
         private readonly MaterialSkinManager materialSkinManager;
         private readonly SplashBaseWallpaperManager wallpaperManager;
         private delegate void AsyncSetWallpaper();
+        private delegate void AsyncSetURI();
         private AsyncSetWallpaper delegateSetWallPaper;
+        private AsyncSetURI delegateSetURI;
+
+        private Timer timer;
+        private Uri uri;
 
         public MainForm()
         {
+            // API Call
+            wallpaperManager = new SplashBaseWallpaperManager();
+            delegateSetWallPaper = this.SetWallpaper;
+            delegateSetURI = this.SetURI;
+            delegateSetURI.BeginInvoke(null, null);
+
             InitializeComponent();
 
             materialSkinManager = MaterialSkinManager.Instance;
@@ -36,20 +47,38 @@ namespace Deskt.op.View
                 Accent.LightBlue200, 
                 TextShade.WHITE);
 
-            delegateSetWallPaper = this.SetWallpaper;
+            
+        }
 
-            wallpaperManager = new SplashBaseWallpaperManager();
+        private void SetURI()
+        {
+            uri = new Uri(wallpaperManager.GetNextRandomUrl());
         }
 
         private void SetWallpaper()
         {
-            var uri = new Uri(wallpaperManager.GetNextRandomUrl());
             DesktopWallpaper.Set(uri, DesktopWallpaper.Style.Fill);
         }
 
         private void materialFlatButton1_Click(object sender, EventArgs e)
         {
             delegateSetWallPaper.BeginInvoke(null, null);
+            delegateSetURI.BeginInvoke(null, null);
+        }
+
+        private void materialFlatButton2_Click(object sender, EventArgs e)
+        {
+            timer = new Timer();
+            timer.Interval = (10000); // 1s
+            timer.Tick += new EventHandler(Timer_Tick);
+            timer.Start();
+        }
+
+        private void Timer_Tick(object sender, EventArgs e)
+        {
+            delegateSetWallPaper.BeginInvoke(null, null);
+            delegateSetURI.BeginInvoke(null, null);
+            timer.Stop(); 
         }
     }
 }
