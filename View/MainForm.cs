@@ -35,9 +35,12 @@ namespace Deskt.op.View
             delegateSetURI = this.SetURI;
             delegateSetURI.BeginInvoke(null, null);
 
+            // Form component setup
             InitializeComponent();
             this.FormClosing += MainForm_FormClosing;
+            this.Resize += MainForm_Resize;
 
+            // Material component setup
             materialSkinManager = MaterialSkinManager.Instance;
             materialSkinManager.AddFormToManage(this);
             materialSkinManager.Theme = MaterialSkinManager.Themes.LIGHT;
@@ -47,8 +50,6 @@ namespace Deskt.op.View
                 Primary.BlueGrey500, 
                 Accent.LightBlue200, 
                 TextShade.WHITE);
-
-            
         }
 
         private void SetURI()
@@ -82,6 +83,11 @@ namespace Deskt.op.View
             timer.Stop(); 
         }
 
+        /* -------- Form Manipulation -------- */
+
+        /* Handler for closing the main form.
+         * Hides application in system tray instead of exiting if close button.
+         */
         private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
         {
             if (e.CloseReason == CloseReason.UserClosing)
@@ -92,7 +98,28 @@ namespace Deskt.op.View
             }
         }
 
-        private void notifyIcon1_MouseDoubleClick(object sender, MouseEventArgs e)
+        /* Handler for resizing the main form.
+         * Minimizes the system tray instead of the taskbar.
+         */
+        private void MainForm_Resize(object sender, EventArgs e)
+        {
+            if (FormWindowState.Minimized == this.WindowState)
+            {
+                this.notifyIcon.Visible = true;
+                // this.notifyIcon.ShowBalloonTip(500);
+                this.Hide();
+            }
+
+            else if (FormWindowState.Normal == this.WindowState)
+            {
+                this.notifyIcon.Visible = false;
+            }
+        }
+
+        /* Handler for double clicking of the system tray icon.
+         * Unhides the application.
+         */
+        private void notifyIcon_MouseDoubleClick(object sender, MouseEventArgs e)
         {
             Show();
             WindowState = FormWindowState.Normal;
