@@ -71,7 +71,7 @@ namespace Deskt.op.View
         private void materialFlatButton2_Click(object sender, EventArgs e)
         {
             timer = new Timer();
-            timer.Interval = (10000); // 1s
+            timer.Interval = (10000); // 10s
             timer.Tick += new EventHandler(Timer_Tick);
             timer.Start();
         }
@@ -90,6 +90,8 @@ namespace Deskt.op.View
          */
         private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
         {
+            // DISABLED FOR DEVELOPMENT
+            return;
             if (e.CloseReason == CloseReason.UserClosing)
             {
                 this.Hide();
