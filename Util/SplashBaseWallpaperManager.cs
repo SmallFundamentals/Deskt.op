@@ -11,7 +11,7 @@ using Deskt.op.Util.Interface;
 
 namespace Deskt.op.Util
 {
-    public class SplashBaseWallpaperManager : IWallpaperManager
+    public class SplashBaseWallpaperManager : BaseWallpaperManager
     {
         private HttpClient httpClient;
         private HttpResponseMessage response;
@@ -20,7 +20,7 @@ namespace Deskt.op.Util
 
         public SplashBaseWallpaperManager() { }
 
-        public string GetNextRandomUrl()
+        public override string GetNextRandomUrl()
         {
             httpClient = new HttpClient();
             httpClient.BaseAddress = new Uri(RANDOM_IMAGE_API_ROUTE);
@@ -43,7 +43,7 @@ namespace Deskt.op.Util
             }  
         }
 
-        public string getUrl()
+        public override string getUrl()
         {
             try
             {
@@ -55,7 +55,7 @@ namespace Deskt.op.Util
             }
         }
 
-        public Uri getUri()
+        public override Uri getUri()
         { 
             return new Uri(getUrl());
         }

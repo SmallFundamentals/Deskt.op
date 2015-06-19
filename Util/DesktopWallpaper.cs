@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices;
+using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -13,14 +14,7 @@ namespace Deskt.op.Util
 
     public sealed class DesktopWallpaper
     {
-        DesktopWallpaper() { }
-
-        const int SPI_SETDESKWALLPAPER = 20;
-        const int SPIF_UPDATEINIFILE = 0x01;
-        const int SPIF_SENDWININICHANGE = 0x02;
-
-        [DllImport("user32.dll", CharSet = CharSet.Auto)]
-        static extern int SystemParametersInfo(int uAction, int uParam, string lpvParam, int fuWinIni);
+        DesktopWallpaper() { }   
 
         public enum Style : int
         {
@@ -29,13 +23,14 @@ namespace Deskt.op.Util
             Stretched,
             Tiled
         }
-
+        
         public static Boolean Set(Uri uri, Style style)
         {
             System.IO.Stream stream = new System.Net.WebClient().OpenRead(uri.ToString());
-
             System.Drawing.Image img = System.Drawing.Image.FromStream(stream);
-            string tempPath = Path.Combine(Path.GetTempPath(), "Wallpaper.bmp");
+
+            // Random wallpaper name to prevent override problem.
+            string tempPath = Path.Combine(Path.GetTempPath(), GenerateRandomFilename());
             img.Save(tempPath, System.Drawing.Imaging.ImageFormat.Bmp);
 
             RegistryKey key = Registry.CurrentUser.OpenSubKey(@"Control Panel\Desktop", true);
@@ -75,5 +70,21 @@ namespace Deskt.op.Util
 
             return true;
         }
+
+        private static string GenerateRandomFilename()
+        {
+            byte[] randomNumber = new byte[1];
+            RNGCryptoServiceProvider rng = new RNGCryptoServiceProvider();
+            rng.GetBytes(randomNumber);
+            
+            return string.Format("Deskt.op_{0}.bmp", randomNumber[0]);;
+        }
+
+        private const int SPI_SETDESKWALLPAPER = 20;
+        private const int SPIF_UPDATEINIFILE = 0x01;
+        private const int SPIF_SENDWININICHANGE = 0x02;
+
+        [DllImport("user32.dll", CharSet = CharSet.Auto)]
+        static extern int SystemParametersInfo(int uAction, int uParam, string lpvParam, int fuWinIni);
     }
 }

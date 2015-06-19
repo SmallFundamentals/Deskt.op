@@ -5,6 +5,7 @@ using System.Data;
 using System.Drawing;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
@@ -12,19 +13,23 @@ using MaterialSkin;
 using MaterialSkin.Controls;
 
 using Deskt.op.Util;
+using Deskt.op.Util.Interface;
 
 namespace Deskt.op.View
 {
+
     public partial class MainForm : MaterialForm
     {
         private readonly MaterialSkinManager materialSkinManager;
-        private readonly SplashBaseWallpaperManager wallpaperManager;
+        private readonly IWallpaperManager wallpaperManager;
         private delegate void AsyncSetWallpaper();
         private delegate void AsyncSetURI();
         private AsyncSetWallpaper delegateSetWallPaper;
         private AsyncSetURI delegateSetURI;
+        private IAsyncResult setWallpaperResult;
+        private IAsyncResult setURIResult;
 
-        private Timer timer;
+        private System.Windows.Forms.Timer timer;
         private Uri uri;
 
         public MainForm()
@@ -33,7 +38,7 @@ namespace Deskt.op.View
             wallpaperManager = new SplashBaseWallpaperManager();
             delegateSetWallPaper = this.SetWallpaper;
             delegateSetURI = this.SetURI;
-            delegateSetURI.BeginInvoke(null, null);
+            setURIResult = delegateSetURI.BeginInvoke(null, null);
 
             // Form component setup
             InitializeComponent();
@@ -50,6 +55,8 @@ namespace Deskt.op.View
                 Primary.BlueGrey500, 
                 Accent.LightBlue200, 
                 TextShade.WHITE);
+
+            this.pictureBox1.Image = wallpaperManager.GetUserWallpaper();
         }
 
         private void SetURI()
@@ -59,18 +66,33 @@ namespace Deskt.op.View
 
         private void SetWallpaper()
         {
+            while (setURIResult.IsCompleted == false)
+            {
+                Thread.Sleep(100);
+            }
             DesktopWallpaper.Set(uri, DesktopWallpaper.Style.Fill);
+        }
+
+        private void materialTabControl1_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            switch ((sender as TabControl).SelectedIndex)
+            {
+                case 0:    
+                    // delegateSetWallPaper.EndInvoke(setWallpaperResult);
+                    // this.pictureBox1.Image = wallpaperManager.GetUserWallpaper();
+                    break;
+            }
         }
 
         private void materialFlatButton1_Click(object sender, EventArgs e)
         {
-            delegateSetWallPaper.BeginInvoke(null, null);
-            delegateSetURI.BeginInvoke(null, null);
+            setWallpaperResult = delegateSetWallPaper.BeginInvoke(null, null);
+            setURIResult = delegateSetURI.BeginInvoke(null, null);
         }
 
         private void materialFlatButton2_Click(object sender, EventArgs e)
         {
-            timer = new Timer();
+            timer = new System.Windows.Forms.Timer();
             timer.Interval = (10000); // 10s
             timer.Tick += new EventHandler(Timer_Tick);
             timer.Start();
@@ -78,8 +100,8 @@ namespace Deskt.op.View
 
         private void Timer_Tick(object sender, EventArgs e)
         {
-            delegateSetWallPaper.BeginInvoke(null, null);
-            delegateSetURI.BeginInvoke(null, null);
+            setWallpaperResult = delegateSetWallPaper.BeginInvoke(null, null);
+            setURIResult = delegateSetURI.BeginInvoke(null, null);
             timer.Stop(); 
         }
 
