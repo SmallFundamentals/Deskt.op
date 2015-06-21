@@ -104,9 +104,9 @@
             // userWallpaperPictureBox
             // 
             this.userWallpaperPictureBox.Image = ((System.Drawing.Image)(resources.GetObject("userWallpaperPictureBox.Image")));
-            this.userWallpaperPictureBox.Location = new System.Drawing.Point(-5, -56);
+            this.userWallpaperPictureBox.Location = new System.Drawing.Point(-5, -36);
             this.userWallpaperPictureBox.Name = "userWallpaperPictureBox";
-            this.userWallpaperPictureBox.Size = new System.Drawing.Size(618, 363);
+            this.userWallpaperPictureBox.Size = new System.Drawing.Size(607, 343);
             this.userWallpaperPictureBox.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
             this.userWallpaperPictureBox.TabIndex = 0;
             this.userWallpaperPictureBox.TabStop = false;
@@ -289,6 +289,7 @@
             this.Controls.Add(this.pictureBox1);
             this.Controls.Add(this.materialTabSelector1);
             this.Controls.Add(this.materialTabControl1);
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MaximizeBox = false;
             this.Name = "MainForm";
             this.Sizable = false;
