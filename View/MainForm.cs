@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+using System.Drawing.Imaging;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading;
@@ -44,6 +46,8 @@ namespace Deskt.op.View
             InitializeComponent();
             this.FormClosing += MainForm_FormClosing;
             this.Resize += MainForm_Resize;
+            this.userWallpaperPictureBox.Image = wallpaperManager.GetUserWallpaper();
+            this.materialTabControl1.SelectedIndexChanged += materialTabControl1_SelectedIndexChanged;
 
             // Material component setup
             materialSkinManager = MaterialSkinManager.Instance;
@@ -55,8 +59,6 @@ namespace Deskt.op.View
                 Primary.BlueGrey500, 
                 Accent.LightBlue200, 
                 TextShade.WHITE);
-
-            this.pictureBox1.Image = wallpaperManager.GetUserWallpaper();
         }
 
         private void SetURI()
@@ -71,23 +73,22 @@ namespace Deskt.op.View
                 Thread.Sleep(100);
             }
             DesktopWallpaper.Set(uri, DesktopWallpaper.Style.Fill);
+            this.userWallpaperPictureBox.Image = wallpaperManager.GetUserWallpaper();
         }
+
+        /* ------------------ Form Handlers ------------------ */
 
         private void materialTabControl1_SelectedIndexChanged(object sender, EventArgs e)
         {
             switch ((sender as TabControl).SelectedIndex)
-            {
-                case 0:    
-                    // delegateSetWallPaper.EndInvoke(setWallpaperResult);
-                    // this.pictureBox1.Image = wallpaperManager.GetUserWallpaper();
+            { 
+                case 0:
+                    this.pictureBox1.Show();
+                    break;
+                default:
+                    this.pictureBox1.Hide();
                     break;
             }
-        }
-
-        private void materialFlatButton1_Click(object sender, EventArgs e)
-        {
-            setWallpaperResult = delegateSetWallPaper.BeginInvoke(null, null);
-            setURIResult = delegateSetURI.BeginInvoke(null, null);
         }
 
         private void materialFlatButton2_Click(object sender, EventArgs e)
@@ -102,13 +103,9 @@ namespace Deskt.op.View
         {
             setWallpaperResult = delegateSetWallPaper.BeginInvoke(null, null);
             setURIResult = delegateSetURI.BeginInvoke(null, null);
-            timer.Stop(); 
         }
 
-        /* -------- Form Manipulation -------- */
-
-        /* Handler for closing the main form.
-         * Hides application in system tray instead of exiting if close button.
+        /* Handler for closing the main form. Hides application in system tray instead of exiting if close button.
          */
         private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
         {
@@ -122,8 +119,7 @@ namespace Deskt.op.View
             }
         }
 
-        /* Handler for resizing the main form.
-         * Minimizes the system tray instead of the taskbar.
+        /* Handler for resizing the main form. Minimizes the system tray instead of the taskbar.
          */
         private void MainForm_Resize(object sender, EventArgs e)
         {
@@ -140,13 +136,32 @@ namespace Deskt.op.View
             }
         }
 
-        /* Handler for double clicking of the system tray icon.
-         * Unhides the application.
+        /* Handler for double clicking of the system tray icon. Unhides the application.
          */
         private void notifyIcon_MouseDoubleClick(object sender, MouseEventArgs e)
         {
             Show();
             WindowState = FormWindowState.Normal;
+        }
+
+        /* Handler for save wallpaper icon
+         */
+        private void pictureBox1_Click(object sender, EventArgs e)
+        {
+            this.saveFileDialog1.Filter = "All Files (*.*)|*.*|Image Files (*.bmp, *.jpg, *.png)|*.bmp;*.jpg;*.png";
+            this.saveFileDialog1.FilterIndex = 2;
+            this.saveFileDialog1.RestoreDirectory = true;
+            
+            if (this.saveFileDialog1.ShowDialog() == DialogResult.OK)
+            {
+                wallpaperManager.GetUserWallpaper().Save(this.saveFileDialog1.FileName, ImageFormat.Bmp);
+            }
+        }
+
+        private void pictureBox2_Click(object sender, EventArgs e)
+        {
+            setWallpaperResult = delegateSetWallPaper.BeginInvoke(null, null);
+            setURIResult = delegateSetURI.BeginInvoke(null, null);
         }
     }
 }
