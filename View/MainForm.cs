@@ -68,12 +68,14 @@ namespace Deskt.op.View
 
         private void SetWallpaper()
         {
+
             while (setURIResult.IsCompleted == false)
             {
                 Thread.Sleep(100);
             }
             DesktopWallpaper.Set(uri, DesktopWallpaper.Style.Fill);
             this.userWallpaperPictureBox.Image = wallpaperManager.GetUserWallpaper();
+            
         }
 
         /* ------------------ Form Handlers ------------------ */
@@ -160,8 +162,20 @@ namespace Deskt.op.View
 
         private void pictureBox2_Click(object sender, EventArgs e)
         {
+            this.Cursor = this.Cursor = Cursors.AppStarting;
             setWallpaperResult = delegateSetWallPaper.BeginInvoke(null, null);
             setURIResult = delegateSetURI.BeginInvoke(null, null);
+            this.Cursor = Cursors.Default;
+        }
+
+        private void materialRaisedButton1_Click(object sender, EventArgs e)
+        {
+            System.Diagnostics.Process.Start("https://www.github.com/SmallFundamentals/Deskt.op");
+        }
+
+        private void label1_Click(object sender, EventArgs e)
+        {
+            System.Diagnostics.Process.Start("http://www.blakeyu.me/");
         }
     }
 }
