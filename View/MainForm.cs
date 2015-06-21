@@ -10,6 +10,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using Microsoft.Win32;
 
 using MaterialSkin;
 using MaterialSkin.Controls;
@@ -22,6 +23,10 @@ namespace Deskt.op.View
 
     public partial class MainForm : MaterialForm
     {
+        //Startup registry key and value
+        private static readonly string StartupKey = "SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Run";
+        private static readonly string StartupValue = "Deskt.op";
+
         private readonly MaterialSkinManager materialSkinManager;
         private readonly IWallpaperManager wallpaperManager;
         private delegate void AsyncSetWallpaper();
@@ -78,6 +83,13 @@ namespace Deskt.op.View
             
         }
 
+        private void SetRunOnStartup(bool runOnStart)
+        {
+            //Set the application to run at startup
+            RegistryKey key = Registry.CurrentUser.OpenSubKey(StartupKey, runOnStart);
+            key.SetValue(StartupValue, Application.ExecutablePath.ToString());
+        }
+
         /* ------------------ Form Handlers ------------------ */
 
         private void materialTabControl1_SelectedIndexChanged(object sender, EventArgs e)
@@ -91,14 +103,6 @@ namespace Deskt.op.View
                     this.pictureBox1.Hide();
                     break;
             }
-        }
-
-        private void materialFlatButton2_Click(object sender, EventArgs e)
-        {
-            timer = new System.Windows.Forms.Timer();
-            timer.Interval = (10000); // 10s
-            timer.Tick += new EventHandler(Timer_Tick);
-            timer.Start();
         }
 
         private void Timer_Tick(object sender, EventArgs e)
@@ -177,5 +181,31 @@ namespace Deskt.op.View
         {
             System.Diagnostics.Process.Start("http://www.blakeyu.me/");
         }
+
+        private void materialSingleLineTextField1_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            if (!char.IsControl(e.KeyChar) && !char.IsDigit(e.KeyChar) && (e.KeyChar != '.'))
+            {
+                e.Handled = true;
+            }
+
+            // Only allow one decimal point
+            if ((e.KeyChar == '.') && ((sender as TextBox).Text.IndexOf('.') > -1))
+            {
+                e.Handled = true;
+            }
+        }
+
+        private void materialRaisedButton2_Click(object sender, EventArgs e)
+        {
+            double interval = Convert.ToDouble(this.materialSingleLineTextField1.Text);
+            interval = interval * 24 * 60 * 60;
+            timer = new System.Windows.Forms.Timer();
+            timer.Interval = (int) interval; 
+            timer.Tick += new EventHandler(Timer_Tick);
+            timer.Start();
+            this.SetRunOnStartup(this.materialCheckBox1.Checked);
+        }
+
     }
 }
