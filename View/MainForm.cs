@@ -64,6 +64,9 @@ namespace Deskt.op.View
                 Primary.BlueGrey500, 
                 Accent.LightBlue200, 
                 TextShade.WHITE);
+
+            this.materialSingleLineTextField1.Text = "   " + Properties.Settings.Default.fetchIntervalDays.ToString();
+            this.materialCheckBox1.Checked = Properties.Settings.Default.isRunOnStartup;
         }
 
         private void SetURI()
@@ -73,7 +76,6 @@ namespace Deskt.op.View
 
         private void SetWallpaper()
         {
-
             while (setURIResult.IsCompleted == false)
             {
                 Thread.Sleep(100);
@@ -198,13 +200,20 @@ namespace Deskt.op.View
 
         private void materialRaisedButton2_Click(object sender, EventArgs e)
         {
+            // Change wallpaper first... TODO: Determine if user actually wants this.
+            setWallpaperResult = delegateSetWallPaper.BeginInvoke(null, null);
+            setURIResult = delegateSetURI.BeginInvoke(null, null);
             double interval = Convert.ToDouble(this.materialSingleLineTextField1.Text);
+            Properties.Settings.Default.fetchIntervalDays = interval;
             interval = interval * 24 * 60 * 60;
             timer = new System.Windows.Forms.Timer();
             timer.Interval = (int) interval; 
             timer.Tick += new EventHandler(Timer_Tick);
             timer.Start();
-            this.SetRunOnStartup(this.materialCheckBox1.Checked);
+            //this.SetRunOnStartup(this.materialCheckBox1.Checked);
+
+            Properties.Settings.Default.isRunOnStartup = this.materialCheckBox1.Checked;
+            Properties.Settings.Default.Save(); // Saves settings in application configuration file
         }
 
     }

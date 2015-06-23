@@ -141,7 +141,6 @@
             this.materialCheckBox1.TabIndex = 6;
             this.materialCheckBox1.Text = "Run on Startup";
             this.materialCheckBox1.UseVisualStyleBackColor = true;
-            this.materialCheckBox1.Visible = false;
             // 
             // materialRaisedButton2
             // 
@@ -186,12 +185,13 @@
             // 
             // materialSingleLineTextField1
             // 
-            this.materialSingleLineTextField1.Anchor = System.Windows.Forms.AnchorStyles.None;
+            this.materialSingleLineTextField1.Cursor = System.Windows.Forms.Cursors.Arrow;
             this.materialSingleLineTextField1.Depth = 0;
             this.materialSingleLineTextField1.Hint = "   1";
-            this.materialSingleLineTextField1.Location = new System.Drawing.Point(313, 97);
+            this.materialSingleLineTextField1.Location = new System.Drawing.Point(313, 107);
             this.materialSingleLineTextField1.MouseState = MaterialSkin.MouseState.HOVER;
             this.materialSingleLineTextField1.Name = "materialSingleLineTextField1";
+            this.materialSingleLineTextField1.Padding = new System.Windows.Forms.Padding(330, 330, 33, 0);
             this.materialSingleLineTextField1.PasswordChar = '\0';
             this.materialSingleLineTextField1.SelectedText = "";
             this.materialSingleLineTextField1.SelectionLength = 0;
@@ -234,7 +234,7 @@
             this.label1.BackColor = System.Drawing.Color.WhiteSmoke;
             this.label1.Cursor = System.Windows.Forms.Cursors.Hand;
             this.label1.Font = new System.Drawing.Font("Trebuchet MS", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label1.Location = new System.Drawing.Point(94, 268);
+            this.label1.Location = new System.Drawing.Point(94, 245);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(417, 16);
             this.label1.TabIndex = 2;
