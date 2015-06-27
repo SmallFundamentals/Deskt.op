@@ -54,6 +54,9 @@ namespace Deskt.op.View
             this.Resize += MainForm_Resize;
             this.userWallpaperPictureBox.Image = wallpaperManager.GetUserWallpaper();
             this.materialTabControl.SelectedIndexChanged += materialTabControl_SelectedIndexChanged;
+            this.notifyIcon.ContextMenu = new ContextMenu();
+            this.notifyIcon.ContextMenu.MenuItems.Add(new MenuItem("Refresh Wallpaper", contextMenu_RefreshWallpaper_Click));
+            this.notifyIcon.ContextMenu.MenuItems.Add(new MenuItem("Exit Deskt.op", contextMenu_Exit_Click));
 
             // Material component setup
             materialSkinManager = MaterialSkinManager.Instance;
@@ -367,6 +370,37 @@ namespace Deskt.op.View
             Properties.Settings.Default.isRunOnStartup = runOnStartup;
             Properties.Settings.Default.nextWallpaperChangeDateTime = DateTime.Now.AddDays(intervalInDays);
             Properties.Settings.Default.Save();
+        }
+
+        /* Summary: 
+         *   Refresh wallpaper
+         * 
+         * Parameters:
+         *   sender: The sender object
+         *   e: Relevant event arguments
+         *   
+         * Return:
+         *   N/A
+         */
+        private void contextMenu_RefreshWallpaper_Click(object sender, EventArgs e)
+        {
+            setWallpaperResult = delegateSetWallPaper.BeginInvoke(null, null);
+            setURIResult = delegateSetURI.BeginInvoke(null, null);
+        }
+
+        /* Summary: 
+         *   Peace
+         * 
+         * Parameters:
+         *   sender: The sender object
+         *   e: Relevant event arguments
+         *   
+         * Return:
+         *   N/A
+         */
+        private void contextMenu_Exit_Click(object sender, EventArgs e)
+        {
+            Application.Exit();
         }
     }
 }
