@@ -19,4 +19,4 @@ Simplistic, beautiful wallpapers for Windows everyday
 
 **Contact Me**
 
-Send me an email! SmallFundamentals@gmail.com
+[Send me an email!](mailto:SmallFundamentals@gmail.com)
