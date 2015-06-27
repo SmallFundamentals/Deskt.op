@@ -26,6 +26,7 @@ namespace Deskt.op.View
         //Startup registry key and value
         private static readonly string StartupKey = "SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Run";
         private static readonly string StartupValue = "Deskt.op";
+        private static readonly int PollingInterval = 1 * 60 * 60 * 1000; // 1hr in ms
 
         private readonly MaterialSkinManager materialSkinManager;
         private readonly IWallpaperManager wallpaperManager;
@@ -52,7 +53,7 @@ namespace Deskt.op.View
             this.FormClosing += MainForm_FormClosing;
             this.Resize += MainForm_Resize;
             this.userWallpaperPictureBox.Image = wallpaperManager.GetUserWallpaper();
-            this.materialTabControl1.SelectedIndexChanged += materialTabControl1_SelectedIndexChanged;
+            this.materialTabControl.SelectedIndexChanged += materialTabControl_SelectedIndexChanged;
 
             // Material component setup
             materialSkinManager = MaterialSkinManager.Instance;
@@ -65,15 +66,35 @@ namespace Deskt.op.View
                 Accent.LightBlue200, 
                 TextShade.WHITE);
 
-            this.materialSingleLineTextField1.Text = "   " + Properties.Settings.Default.fetchIntervalDays.ToString();
+            this.refreshIntervalTextField.Text = "   " + Properties.Settings.Default.fetchIntervalDays.ToString();
             this.materialCheckBox1.Checked = Properties.Settings.Default.isRunOnStartup;
+
+            SetTimer();
         }
 
+        /* Summary: 
+         *   Set URI with next random wallpaper's url
+         * 
+         * Parameters:
+         *   N/A
+         *   
+         * Return:
+         *   N/A
+         */
         private void SetURI()
         {
             uri = new Uri(wallpaperManager.GetNextRandomUrl());
         }
 
+        /* Summary: 
+         *   Set the user's wallpaper using the URI received from API call.
+         * 
+         * Parameters:
+         *   N/A
+         *   
+         * Return:
+         *   N/A
+         */
         private void SetWallpaper()
         {
             while (setURIResult.IsCompleted == false)
@@ -82,43 +103,102 @@ namespace Deskt.op.View
             }
             DesktopWallpaper.Set(uri, DesktopWallpaper.Style.Fill);
             this.userWallpaperPictureBox.Image = wallpaperManager.GetUserWallpaper();
-            
         }
 
+        /* Summary: 
+         *   Set registry key for running application on startup.
+         * 
+         * Parameters:
+         *   runOnStart {bool}: whether application should run on startup
+         *   
+         * Return:
+         *   N/A
+         */
         private void SetRunOnStartup(bool runOnStart)
         {
-            //Set the application to run at startup
-            RegistryKey key = Registry.CurrentUser.OpenSubKey(StartupKey, runOnStart);
-            key.SetValue(StartupValue, Application.ExecutablePath.ToString());
+            RegistryKey key = Registry.CurrentUser.OpenSubKey(StartupKey, true);
+            key.SetValue(StartupValue, runOnStart);
         }
 
-        /* ------------------ Form Handlers ------------------ */
+        /* Summary: 
+         *   Start polling for next wallpaper change.
+         * 
+         * Parameters:
+         *   N/A
+         *   
+         * Return:
+         *   N/A
+         */
+        private void SetTimer()
+        { 
+            if (timer != null)
+                timer.Stop();
+            timer = new System.Windows.Forms.Timer();
+            timer.Interval = PollingInterval; 
+            timer.Tick += new EventHandler(Timer_Tick);
+            timer.Start();
+        }
 
-        private void materialTabControl1_SelectedIndexChanged(object sender, EventArgs e)
+        /* ------------------ Event Handlers ------------------ */
+
+        /* Summary: 
+         *   Handler for tab change.
+         * 
+         * Parameters:
+         *   sender: The sender object
+         *   e: Relevant event arguments
+         *   
+         * Return:
+         *   N/A
+         */
+        private void materialTabControl_SelectedIndexChanged(object sender, EventArgs e)
         {
             switch ((sender as TabControl).SelectedIndex)
             { 
                 case 0:
-                    this.pictureBox1.Show();
+                    this.saveFileIcon.Show();
                     break;
                 default:
-                    this.pictureBox1.Hide();
+                    this.saveFileIcon.Hide();
                     break;
             }
         }
 
+        /* Summary: 
+         *   Handler for polling timer tick
+         *   - Check if current DateTime is greater than next wallpaper change DateTime.
+         *     - If so, change wallpaper and update the next DateTime.
+         * 
+         * Parameters:
+         *   sender: The sender object
+         *   e: Relevant event arguments
+         *   
+         * Return:
+         *   N/A
+         */
         private void Timer_Tick(object sender, EventArgs e)
         {
-            setWallpaperResult = delegateSetWallPaper.BeginInvoke(null, null);
-            setURIResult = delegateSetURI.BeginInvoke(null, null);
+            if (DateTime.Now >= Properties.Settings.Default.nextWallpaperChangeDateTime)
+            { 
+                setWallpaperResult = delegateSetWallPaper.BeginInvoke(null, null);
+                setURIResult = delegateSetURI.BeginInvoke(null, null);
+                Properties.Settings.Default.nextWallpaperChangeDateTime = 
+                    DateTime.Now.AddDays(Properties.Settings.Default.fetchIntervalDays);
+            }
         }
 
-        /* Handler for closing the main form. Hides application in system tray instead of exiting if close button.
+        /* Summary: 
+         *   Handler for window closure.
+         *   - Minimize to system tray unless shutdown etc.
+         * Parameters:
+         *   sender: The sender object
+         *   e: Relevant event arguments
+         *   
+         * Return:
+         *   N/A
          */
         private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
         {
-            // DISABLED FOR DEVELOPMENT
-            return;
             if (e.CloseReason == CloseReason.UserClosing)
             {
                 this.Hide();
@@ -127,7 +207,15 @@ namespace Deskt.op.View
             }
         }
 
-        /* Handler for resizing the main form. Minimizes the system tray instead of the taskbar.
+        /* Summary: 
+         *   Handler for resizing of the form. Minize to system tray.
+         * 
+         * Parameters:
+         *   sender: The sender object
+         *   e: Relevant event arguments
+         *   
+         * Return:
+         *   N/A
          */
         private void MainForm_Resize(object sender, EventArgs e)
         {
@@ -144,7 +232,15 @@ namespace Deskt.op.View
             }
         }
 
-        /* Handler for double clicking of the system tray icon. Unhides the application.
+        /* Summary: 
+         *   Handler for double clicking of notification icon
+         * 
+         * Parameters:
+         *   sender: The sender object
+         *   e: Relevant event arguments
+         *   
+         * Return:
+         *   N/A
          */
         private void notifyIcon_MouseDoubleClick(object sender, MouseEventArgs e)
         {
@@ -152,39 +248,85 @@ namespace Deskt.op.View
             WindowState = FormWindowState.Normal;
         }
 
-        /* Handler for save wallpaper icon
+        /* Summary: 
+         *   On click, show save file dialog and save current wallpaper.
+         * 
+         * Parameters:
+         *   sender: The sender object
+         *   e: Relevant event arguments
+         *   
+         * Return:
+         *   N/A
          */
-        private void pictureBox1_Click(object sender, EventArgs e)
+        private void saveFileIcon_Click(object sender, EventArgs e)
         {
-            this.saveFileDialog1.Filter = "All Files (*.*)|*.*|Image Files (*.bmp, *.jpg, *.png)|*.bmp;*.jpg;*.png";
-            this.saveFileDialog1.FilterIndex = 2;
-            this.saveFileDialog1.RestoreDirectory = true;
+            this.saveFileDialog.Filter = "All Files (*.*)|*.*|Image Files (*.bmp, *.jpg, *.png)|*.bmp;*.jpg;*.png";
+            this.saveFileDialog.FilterIndex = 2;
+            this.saveFileDialog.RestoreDirectory = true;
             
-            if (this.saveFileDialog1.ShowDialog() == DialogResult.OK)
+            if (this.saveFileDialog.ShowDialog() == DialogResult.OK)
             {
-                wallpaperManager.GetUserWallpaper().Save(this.saveFileDialog1.FileName, ImageFormat.Bmp);
+                wallpaperManager.GetUserWallpaper().Save(this.saveFileDialog.FileName, ImageFormat.Bmp);
             }
         }
 
-        private void pictureBox2_Click(object sender, EventArgs e)
+        /* Summary: 
+         *   On click, invoke wallpaper change and API call for new wallpaper.
+         * 
+         * Parameters:
+         *   sender: The sender object
+         *   e: Relevant event arguments
+         *   
+         * Return:
+         *   N/A
+         */
+        private void refreshWallpaperIcon_Click(object sender, EventArgs e)
         {
-            this.Cursor = this.Cursor = Cursors.AppStarting;
             setWallpaperResult = delegateSetWallPaper.BeginInvoke(null, null);
             setURIResult = delegateSetURI.BeginInvoke(null, null);
-            this.Cursor = Cursors.Default;
         }
 
-        private void materialRaisedButton1_Click(object sender, EventArgs e)
+        /* Summary: 
+         *   On click, open page to the project github repo
+         * 
+         * Parameters:
+         *   sender: The sender object
+         *   e: Relevant event arguments
+         *   
+         * Return:
+         *   N/A
+         */
+        private void repoLabelButton_Click(object sender, EventArgs e)
         {
             System.Diagnostics.Process.Start("https://www.github.com/SmallFundamentals/Deskt.op");
         }
 
-        private void label1_Click(object sender, EventArgs e)
+        /* Summary: 
+         *   On click, open page to my website.
+         * 
+         * Parameters:
+         *   sender: The sender object
+         *   e: Relevant event arguments
+         *   
+         * Return:
+         *   N/A
+         */
+        private void myLabel_Click(object sender, EventArgs e)
         {
             System.Diagnostics.Process.Start("http://www.blakeyu.me/");
         }
 
-        private void materialSingleLineTextField1_KeyPress(object sender, KeyPressEventArgs e)
+        /* Summary: 
+         *   On keypress, allow input only if numerical or first decimal.
+         * 
+         * Parameters:
+         *   sender: The sender object
+         *   e: Relevant event arguments
+         *   
+         * Return:
+         *   N/A
+         */
+        private void refreshIntervalTextField_KeyPress(object sender, KeyPressEventArgs e)
         {
             if (!char.IsControl(e.KeyChar) && !char.IsDigit(e.KeyChar) && (e.KeyChar != '.'))
             {
@@ -198,23 +340,33 @@ namespace Deskt.op.View
             }
         }
 
-        private void materialRaisedButton2_Click(object sender, EventArgs e)
+        /* Summary: 
+         *   Handles the saving of settings and invokes immediate actions.
+         *   - Resets timer
+         *   - Saves key to registry
+         *   - Updates next date to update wallpaper
+         * 
+         * Parameters:
+         *   sender: The sender object
+         *   e: Relevant event arguments
+         *   
+         * Return:
+         *   N/A
+         */
+        private void saveSettingsButton_Click(object sender, EventArgs e)
         {
-            // Change wallpaper first... TODO: Determine if user actually wants this.
-            setWallpaperResult = delegateSetWallPaper.BeginInvoke(null, null);
-            setURIResult = delegateSetURI.BeginInvoke(null, null);
-            double interval = Convert.ToDouble(this.materialSingleLineTextField1.Text);
-            Properties.Settings.Default.fetchIntervalDays = interval;
-            interval = interval * 24 * 60 * 60;
-            timer = new System.Windows.Forms.Timer();
-            timer.Interval = (int) interval; 
-            timer.Tick += new EventHandler(Timer_Tick);
-            timer.Start();
-            //this.SetRunOnStartup(this.materialCheckBox1.Checked);
+            double intervalInDays = Convert.ToDouble(this.refreshIntervalTextField.Text);
+            bool runOnStartup = this.materialCheckBox1.Checked;
 
-            Properties.Settings.Default.isRunOnStartup = this.materialCheckBox1.Checked;
-            Properties.Settings.Default.Save(); // Saves settings in application configuration file
+            SetTimer();
+
+            // Save startup settings to registry
+            SetRunOnStartup(runOnStartup);
+
+            Properties.Settings.Default.fetchIntervalDays = intervalInDays;
+            Properties.Settings.Default.isRunOnStartup = runOnStartup;
+            Properties.Settings.Default.nextWallpaperChangeDateTime = DateTime.Now.AddDays(intervalInDays);
+            Properties.Settings.Default.Save();
         }
-
     }
 }

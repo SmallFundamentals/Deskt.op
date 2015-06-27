@@ -24,7 +24,7 @@ namespace Deskt.op.Util
             SystemParametersInfo(SPI_GETDESKWALLPAPER, wallpaperPath.Length, wallpaperPath, 0);
             wallpaperPath = wallpaperPath.Substring(0, wallpaperPath.IndexOf('\0'));
 
-            Console.WriteLine(wallpaperPath);
+            Console.WriteLine("User wallpaper path: " + wallpaperPath);
 
             return Image.FromFile(wallpaperPath);
         }

@@ -46,5 +46,17 @@ namespace Deskt.op.Properties {
                 this["isRunOnStartup"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("2999-01-01")]
+        public global::System.DateTime nextWallpaperChangeDateTime {
+            get {
+                return ((global::System.DateTime)(this["nextWallpaperChangeDateTime"]));
+            }
+            set {
+                this["nextWallpaperChangeDateTime"] = value;
+            }
+        }
     }
 }

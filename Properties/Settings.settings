@@ -8,5 +8,8 @@
     <Setting Name="isRunOnStartup" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">False</Value>
     </Setting>
+    <Setting Name="nextWallpaperChangeDateTime" Type="System.DateTime" Scope="User">
+      <Value Profile="(Default)">2999-01-01</Value>
+    </Setting>
   </Settings>
 </SettingsFile>

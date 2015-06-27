@@ -32,30 +32,30 @@
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
             this.notifyIcon = new System.Windows.Forms.NotifyIcon(this.components);
             this.materialTabSelector1 = new MaterialSkin.Controls.MaterialTabSelector();
-            this.materialTabControl1 = new MaterialSkin.Controls.MaterialTabControl();
+            this.materialTabControl = new MaterialSkin.Controls.MaterialTabControl();
             this.tabPage1 = new System.Windows.Forms.TabPage();
             this.userWallpaperPictureBox = new System.Windows.Forms.PictureBox();
             this.tabPage2 = new System.Windows.Forms.TabPage();
             this.materialCheckBox1 = new MaterialSkin.Controls.MaterialCheckBox();
-            this.materialRaisedButton2 = new MaterialSkin.Controls.MaterialRaisedButton();
+            this.saveSettingsButton = new MaterialSkin.Controls.MaterialRaisedButton();
             this.materialLabel3 = new MaterialSkin.Controls.MaterialLabel();
             this.materialLabel2 = new MaterialSkin.Controls.MaterialLabel();
-            this.materialSingleLineTextField1 = new MaterialSkin.Controls.MaterialSingleLineTextField();
+            this.refreshIntervalTextField = new MaterialSkin.Controls.MaterialSingleLineTextField();
             this.tabPage3 = new System.Windows.Forms.TabPage();
-            this.materialRaisedButton1 = new MaterialSkin.Controls.MaterialRaisedButton();
-            this.label1 = new System.Windows.Forms.Label();
+            this.repoLabelButton = new MaterialSkin.Controls.MaterialRaisedButton();
+            this.myLabel = new System.Windows.Forms.Label();
             this.pictureBox3 = new System.Windows.Forms.PictureBox();
-            this.pictureBox1 = new System.Windows.Forms.PictureBox();
-            this.saveFileDialog1 = new System.Windows.Forms.SaveFileDialog();
-            this.pictureBox2 = new System.Windows.Forms.PictureBox();
-            this.materialTabControl1.SuspendLayout();
+            this.saveFileIcon = new System.Windows.Forms.PictureBox();
+            this.saveFileDialog = new System.Windows.Forms.SaveFileDialog();
+            this.refreshWallpaperIcon = new System.Windows.Forms.PictureBox();
+            this.materialTabControl.SuspendLayout();
             this.tabPage1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.userWallpaperPictureBox)).BeginInit();
             this.tabPage2.SuspendLayout();
             this.tabPage3.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox3)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.saveFileIcon)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.refreshWallpaperIcon)).BeginInit();
             this.SuspendLayout();
             // 
             // notifyIcon
@@ -67,7 +67,7 @@
             // 
             // materialTabSelector1
             // 
-            this.materialTabSelector1.BaseTabControl = this.materialTabControl1;
+            this.materialTabSelector1.BaseTabControl = this.materialTabControl;
             this.materialTabSelector1.Depth = 0;
             this.materialTabSelector1.Location = new System.Drawing.Point(-1, 61);
             this.materialTabSelector1.MouseState = MaterialSkin.MouseState.HOVER;
@@ -76,19 +76,19 @@
             this.materialTabSelector1.TabIndex = 2;
             this.materialTabSelector1.Text = "materialTabSelector1";
             // 
-            // materialTabControl1
+            // materialTabControl
             // 
-            this.materialTabControl1.Controls.Add(this.tabPage1);
-            this.materialTabControl1.Controls.Add(this.tabPage2);
-            this.materialTabControl1.Controls.Add(this.tabPage3);
-            this.materialTabControl1.Cursor = System.Windows.Forms.Cursors.Default;
-            this.materialTabControl1.Depth = 0;
-            this.materialTabControl1.Location = new System.Drawing.Point(0, 95);
-            this.materialTabControl1.MouseState = MaterialSkin.MouseState.HOVER;
-            this.materialTabControl1.Name = "materialTabControl1";
-            this.materialTabControl1.SelectedIndex = 0;
-            this.materialTabControl1.Size = new System.Drawing.Size(606, 310);
-            this.materialTabControl1.TabIndex = 3;
+            this.materialTabControl.Controls.Add(this.tabPage1);
+            this.materialTabControl.Controls.Add(this.tabPage2);
+            this.materialTabControl.Controls.Add(this.tabPage3);
+            this.materialTabControl.Cursor = System.Windows.Forms.Cursors.Default;
+            this.materialTabControl.Depth = 0;
+            this.materialTabControl.Location = new System.Drawing.Point(0, 95);
+            this.materialTabControl.MouseState = MaterialSkin.MouseState.HOVER;
+            this.materialTabControl.Name = "materialTabControl";
+            this.materialTabControl.SelectedIndex = 0;
+            this.materialTabControl.Size = new System.Drawing.Size(606, 310);
+            this.materialTabControl.TabIndex = 3;
             // 
             // tabPage1
             // 
@@ -115,10 +115,10 @@
             // 
             this.tabPage2.BackColor = System.Drawing.Color.WhiteSmoke;
             this.tabPage2.Controls.Add(this.materialCheckBox1);
-            this.tabPage2.Controls.Add(this.materialRaisedButton2);
+            this.tabPage2.Controls.Add(this.saveSettingsButton);
             this.tabPage2.Controls.Add(this.materialLabel3);
             this.tabPage2.Controls.Add(this.materialLabel2);
-            this.tabPage2.Controls.Add(this.materialSingleLineTextField1);
+            this.tabPage2.Controls.Add(this.refreshIntervalTextField);
             this.tabPage2.Location = new System.Drawing.Point(4, 22);
             this.tabPage2.Name = "tabPage2";
             this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
@@ -142,20 +142,20 @@
             this.materialCheckBox1.Text = "Run on Startup";
             this.materialCheckBox1.UseVisualStyleBackColor = true;
             // 
-            // materialRaisedButton2
+            // saveSettingsButton
             // 
-            this.materialRaisedButton2.Anchor = System.Windows.Forms.AnchorStyles.None;
-            this.materialRaisedButton2.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.materialRaisedButton2.Depth = 0;
-            this.materialRaisedButton2.Location = new System.Drawing.Point(265, 227);
-            this.materialRaisedButton2.MouseState = MaterialSkin.MouseState.HOVER;
-            this.materialRaisedButton2.Name = "materialRaisedButton2";
-            this.materialRaisedButton2.Primary = true;
-            this.materialRaisedButton2.Size = new System.Drawing.Size(75, 23);
-            this.materialRaisedButton2.TabIndex = 5;
-            this.materialRaisedButton2.Text = "SAVE";
-            this.materialRaisedButton2.UseVisualStyleBackColor = true;
-            this.materialRaisedButton2.Click += new System.EventHandler(this.materialRaisedButton2_Click);
+            this.saveSettingsButton.Anchor = System.Windows.Forms.AnchorStyles.None;
+            this.saveSettingsButton.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.saveSettingsButton.Depth = 0;
+            this.saveSettingsButton.Location = new System.Drawing.Point(265, 227);
+            this.saveSettingsButton.MouseState = MaterialSkin.MouseState.HOVER;
+            this.saveSettingsButton.Name = "saveSettingsButton";
+            this.saveSettingsButton.Primary = true;
+            this.saveSettingsButton.Size = new System.Drawing.Size(75, 23);
+            this.saveSettingsButton.TabIndex = 5;
+            this.saveSettingsButton.Text = "SAVE";
+            this.saveSettingsButton.UseVisualStyleBackColor = true;
+            this.saveSettingsButton.Click += new System.EventHandler(this.saveSettingsButton_Click);
             // 
             // materialLabel3
             // 
@@ -183,27 +183,27 @@
             this.materialLabel2.TabIndex = 3;
             this.materialLabel2.Text = "day(s)";
             // 
-            // materialSingleLineTextField1
+            // refreshIntervalTextField
             // 
-            this.materialSingleLineTextField1.Cursor = System.Windows.Forms.Cursors.Arrow;
-            this.materialSingleLineTextField1.Depth = 0;
-            this.materialSingleLineTextField1.Hint = "   1";
-            this.materialSingleLineTextField1.Location = new System.Drawing.Point(313, 107);
-            this.materialSingleLineTextField1.MouseState = MaterialSkin.MouseState.HOVER;
-            this.materialSingleLineTextField1.Name = "materialSingleLineTextField1";
-            this.materialSingleLineTextField1.Padding = new System.Windows.Forms.Padding(330, 330, 33, 0);
-            this.materialSingleLineTextField1.PasswordChar = '\0';
-            this.materialSingleLineTextField1.SelectedText = "";
-            this.materialSingleLineTextField1.SelectionLength = 0;
-            this.materialSingleLineTextField1.SelectionStart = 0;
-            this.materialSingleLineTextField1.Size = new System.Drawing.Size(38, 23);
-            this.materialSingleLineTextField1.TabIndex = 2;
-            this.materialSingleLineTextField1.UseSystemPasswordChar = false;
+            this.refreshIntervalTextField.Cursor = System.Windows.Forms.Cursors.Arrow;
+            this.refreshIntervalTextField.Depth = 0;
+            this.refreshIntervalTextField.Hint = "   1";
+            this.refreshIntervalTextField.Location = new System.Drawing.Point(313, 107);
+            this.refreshIntervalTextField.MouseState = MaterialSkin.MouseState.HOVER;
+            this.refreshIntervalTextField.Name = "refreshIntervalTextField";
+            this.refreshIntervalTextField.Padding = new System.Windows.Forms.Padding(330, 330, 33, 0);
+            this.refreshIntervalTextField.PasswordChar = '\0';
+            this.refreshIntervalTextField.SelectedText = "";
+            this.refreshIntervalTextField.SelectionLength = 0;
+            this.refreshIntervalTextField.SelectionStart = 0;
+            this.refreshIntervalTextField.Size = new System.Drawing.Size(38, 23);
+            this.refreshIntervalTextField.TabIndex = 2;
+            this.refreshIntervalTextField.UseSystemPasswordChar = false;
             // 
             // tabPage3
             // 
-            this.tabPage3.Controls.Add(this.materialRaisedButton1);
-            this.tabPage3.Controls.Add(this.label1);
+            this.tabPage3.Controls.Add(this.repoLabelButton);
+            this.tabPage3.Controls.Add(this.myLabel);
             this.tabPage3.Controls.Add(this.pictureBox3);
             this.tabPage3.Location = new System.Drawing.Point(4, 22);
             this.tabPage3.Name = "tabPage3";
@@ -213,34 +213,34 @@
             this.tabPage3.Text = "About";
             this.tabPage3.UseVisualStyleBackColor = true;
             // 
-            // materialRaisedButton1
+            // repoLabelButton
             // 
-            this.materialRaisedButton1.BackColor = System.Drawing.Color.Turquoise;
-            this.materialRaisedButton1.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.materialRaisedButton1.Depth = 0;
-            this.materialRaisedButton1.Location = new System.Drawing.Point(-15, -4);
-            this.materialRaisedButton1.MouseState = MaterialSkin.MouseState.HOVER;
-            this.materialRaisedButton1.Name = "materialRaisedButton1";
-            this.materialRaisedButton1.Primary = true;
-            this.materialRaisedButton1.Size = new System.Drawing.Size(627, 56);
-            this.materialRaisedButton1.TabIndex = 4;
-            this.materialRaisedButton1.Text = "BEAUTIFUL WALLPAPERS DELIVERED RIGHT TO YOUR DESKTOP.";
-            this.materialRaisedButton1.UseVisualStyleBackColor = false;
-            this.materialRaisedButton1.Click += new System.EventHandler(this.materialRaisedButton1_Click);
+            this.repoLabelButton.BackColor = System.Drawing.Color.Turquoise;
+            this.repoLabelButton.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.repoLabelButton.Depth = 0;
+            this.repoLabelButton.Location = new System.Drawing.Point(-15, -4);
+            this.repoLabelButton.MouseState = MaterialSkin.MouseState.HOVER;
+            this.repoLabelButton.Name = "repoLabelButton";
+            this.repoLabelButton.Primary = true;
+            this.repoLabelButton.Size = new System.Drawing.Size(627, 56);
+            this.repoLabelButton.TabIndex = 4;
+            this.repoLabelButton.Text = "BEAUTIFUL WALLPAPERS DELIVERED RIGHT TO YOUR DESKTOP.";
+            this.repoLabelButton.UseVisualStyleBackColor = false;
+            this.repoLabelButton.Click += new System.EventHandler(this.repoLabelButton_Click);
             // 
-            // label1
+            // myLabel
             // 
-            this.label1.AutoSize = true;
-            this.label1.BackColor = System.Drawing.Color.WhiteSmoke;
-            this.label1.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.label1.Font = new System.Drawing.Font("Trebuchet MS", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label1.Location = new System.Drawing.Point(94, 245);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(417, 16);
-            this.label1.TabIndex = 2;
-            this.label1.Text = "Blake Yu is a 3rd year Software Engineering student at the University of Waterloo" +
+            this.myLabel.AutoSize = true;
+            this.myLabel.BackColor = System.Drawing.Color.WhiteSmoke;
+            this.myLabel.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.myLabel.Font = new System.Drawing.Font("Trebuchet MS", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.myLabel.Location = new System.Drawing.Point(95, 244);
+            this.myLabel.Name = "myLabel";
+            this.myLabel.Size = new System.Drawing.Size(417, 16);
+            this.myLabel.TabIndex = 2;
+            this.myLabel.Text = "Blake Yu is a 3rd year Software Engineering student at the University of Waterloo" +
     "";
-            this.label1.Click += new System.EventHandler(this.label1_Click);
+            this.myLabel.Click += new System.EventHandler(this.myLabel_Click);
             // 
             // pictureBox3
             // 
@@ -252,49 +252,49 @@
             this.pictureBox3.TabIndex = 1;
             this.pictureBox3.TabStop = false;
             // 
-            // pictureBox1
+            // saveFileIcon
             // 
-            this.pictureBox1.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.pictureBox1.Image = ((System.Drawing.Image)(resources.GetObject("pictureBox1.Image")));
-            this.pictureBox1.Location = new System.Drawing.Point(532, 65);
-            this.pictureBox1.Name = "pictureBox1";
-            this.pictureBox1.Size = new System.Drawing.Size(24, 24);
-            this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize;
-            this.pictureBox1.TabIndex = 4;
-            this.pictureBox1.TabStop = false;
-            this.pictureBox1.Click += new System.EventHandler(this.pictureBox1_Click);
+            this.saveFileIcon.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.saveFileIcon.Image = ((System.Drawing.Image)(resources.GetObject("saveFileIcon.Image")));
+            this.saveFileIcon.Location = new System.Drawing.Point(532, 65);
+            this.saveFileIcon.Name = "saveFileIcon";
+            this.saveFileIcon.Size = new System.Drawing.Size(24, 24);
+            this.saveFileIcon.SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize;
+            this.saveFileIcon.TabIndex = 4;
+            this.saveFileIcon.TabStop = false;
+            this.saveFileIcon.Click += new System.EventHandler(this.saveFileIcon_Click);
             // 
-            // saveFileDialog1
+            // saveFileDialog
             // 
-            this.saveFileDialog1.FileName = "deskt.op_wallpaper.bmp";
+            this.saveFileDialog.FileName = "deskt.op_wallpaper.bmp";
             // 
-            // pictureBox2
+            // refreshWallpaperIcon
             // 
-            this.pictureBox2.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.pictureBox2.Image = ((System.Drawing.Image)(resources.GetObject("pictureBox2.Image")));
-            this.pictureBox2.Location = new System.Drawing.Point(564, 65);
-            this.pictureBox2.Name = "pictureBox2";
-            this.pictureBox2.Size = new System.Drawing.Size(24, 24);
-            this.pictureBox2.SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize;
-            this.pictureBox2.TabIndex = 5;
-            this.pictureBox2.TabStop = false;
-            this.pictureBox2.Click += new System.EventHandler(this.pictureBox2_Click);
+            this.refreshWallpaperIcon.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.refreshWallpaperIcon.Image = ((System.Drawing.Image)(resources.GetObject("refreshWallpaperIcon.Image")));
+            this.refreshWallpaperIcon.Location = new System.Drawing.Point(564, 65);
+            this.refreshWallpaperIcon.Name = "refreshWallpaperIcon";
+            this.refreshWallpaperIcon.Size = new System.Drawing.Size(24, 24);
+            this.refreshWallpaperIcon.SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize;
+            this.refreshWallpaperIcon.TabIndex = 5;
+            this.refreshWallpaperIcon.TabStop = false;
+            this.refreshWallpaperIcon.Click += new System.EventHandler(this.refreshWallpaperIcon_Click);
             // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(600, 400);
-            this.Controls.Add(this.pictureBox2);
-            this.Controls.Add(this.pictureBox1);
+            this.Controls.Add(this.refreshWallpaperIcon);
+            this.Controls.Add(this.saveFileIcon);
             this.Controls.Add(this.materialTabSelector1);
-            this.Controls.Add(this.materialTabControl1);
+            this.Controls.Add(this.materialTabControl);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MaximizeBox = false;
             this.Name = "MainForm";
             this.Sizable = false;
             this.Text = "Deskt.op";
-            this.materialTabControl1.ResumeLayout(false);
+            this.materialTabControl.ResumeLayout(false);
             this.tabPage1.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.userWallpaperPictureBox)).EndInit();
             this.tabPage2.ResumeLayout(false);
@@ -302,8 +302,8 @@
             this.tabPage3.ResumeLayout(false);
             this.tabPage3.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox3)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.saveFileIcon)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.refreshWallpaperIcon)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -313,20 +313,20 @@
 
         private System.Windows.Forms.NotifyIcon notifyIcon;
         private MaterialSkin.Controls.MaterialTabSelector materialTabSelector1;
-        private MaterialSkin.Controls.MaterialTabControl materialTabControl1;
+        private MaterialSkin.Controls.MaterialTabControl materialTabControl;
         private System.Windows.Forms.TabPage tabPage1;
         private System.Windows.Forms.TabPage tabPage2;
         private System.Windows.Forms.PictureBox userWallpaperPictureBox;
-        private System.Windows.Forms.PictureBox pictureBox1;
-        private System.Windows.Forms.SaveFileDialog saveFileDialog1;
-        private System.Windows.Forms.PictureBox pictureBox2;
+        private System.Windows.Forms.PictureBox saveFileIcon;
+        private System.Windows.Forms.SaveFileDialog saveFileDialog;
+        private System.Windows.Forms.PictureBox refreshWallpaperIcon;
         private System.Windows.Forms.TabPage tabPage3;
-        private System.Windows.Forms.Label label1;
-        private MaterialSkin.Controls.MaterialRaisedButton materialRaisedButton1;
+        private System.Windows.Forms.Label myLabel;
+        private MaterialSkin.Controls.MaterialRaisedButton repoLabelButton;
         private System.Windows.Forms.PictureBox pictureBox3;
-        private MaterialSkin.Controls.MaterialSingleLineTextField materialSingleLineTextField1;
+        private MaterialSkin.Controls.MaterialSingleLineTextField refreshIntervalTextField;
         private MaterialSkin.Controls.MaterialLabel materialLabel2;
-        private MaterialSkin.Controls.MaterialRaisedButton materialRaisedButton2;
+        private MaterialSkin.Controls.MaterialRaisedButton saveSettingsButton;
         private MaterialSkin.Controls.MaterialLabel materialLabel3;
         private MaterialSkin.Controls.MaterialCheckBox materialCheckBox1;
     }
