@@ -103,7 +103,7 @@
             // userWallpaperPictureBox
             // 
             this.userWallpaperPictureBox.Image = ((System.Drawing.Image)(resources.GetObject("userWallpaperPictureBox.Image")));
-            this.userWallpaperPictureBox.Location = new System.Drawing.Point(-5, -36);
+            this.userWallpaperPictureBox.Location = new System.Drawing.Point(-5, -28);
             this.userWallpaperPictureBox.Name = "userWallpaperPictureBox";
             this.userWallpaperPictureBox.Size = new System.Drawing.Size(607, 343);
             this.userWallpaperPictureBox.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;

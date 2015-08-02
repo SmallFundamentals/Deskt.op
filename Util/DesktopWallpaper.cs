@@ -1,12 +1,9 @@
 ﻿using Microsoft.Win32;
 using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Runtime.InteropServices;
 using System.Security.Cryptography;
-using System.Text;
-using System.Threading.Tasks;
+using System.Windows.Forms;
 
 namespace Deskt.op.Util
 {
@@ -23,10 +20,16 @@ namespace Deskt.op.Util
             Stretched,
             Tiled
         }
-        
+
+        public static Tuple<int, int> GetPrimaryScreenResolution()
+        {
+            System.Drawing.Rectangle resolution = Screen.PrimaryScreen.Bounds;
+            return new Tuple<int, int>(resolution.Width, resolution.Height);
+        }
+
         public static Boolean Set(Uri uri, Style style)
         {
-            System.IO.Stream stream = new System.Net.WebClient().OpenRead(uri.ToString());
+            Stream stream = new System.Net.WebClient().OpenRead(uri.ToString());
             System.Drawing.Image img = System.Drawing.Image.FromStream(stream);
 
             // Random wallpaper name to prevent override problem.

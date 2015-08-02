@@ -1,10 +1,6 @@
 ﻿using System;
 using System.Drawing;
-using System.Collections.Generic;
-using System.Linq;
 using System.Runtime.InteropServices;
-using System.Text;
-using System.Threading.Tasks;
 
 using Deskt.op.Util.Interface;
 
@@ -26,6 +22,7 @@ namespace Deskt.op.Util
 
             Console.WriteLine("User wallpaper path: " + wallpaperPath);
 
+            // TODO: Possible exception here if previous wallpaper gets moved
             return Image.FromFile(wallpaperPath);
         }
         public abstract string GetNextRandomUrl();

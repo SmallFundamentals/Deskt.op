@@ -101,6 +101,7 @@
     <Compile Include="App.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Util\BaseWallpaperManager.cs" />
+    <Compile Include="Util\UnsplashItWallpaperManager.cs" />
     <Compile Include="Util\SplashBaseWallpaperManager.cs" />
     <Compile Include="Util\DesktopWallpaper.cs" />
     <Compile Include="Util\Interface\IWallpaperManager.cs" />
