@@ -6,10 +6,10 @@ namespace Deskt.op.Util
     {
         private Tuple<int, int> Resolution { get; set; }
         private string Url;
-        private bool isRandom { get; set; }
-        private bool isBlur { get; set; }
-        private bool isGrayscale { get; set; }
-        private bool isMyPicks { get; set; }
+        public bool isRandom { get; set; }
+        public bool isBlur { get; set; }
+        public bool isGrayscale { get; set; }
+        public bool isMyPicks { get; set; }
 
         public UnsplashItWallpaperManager(bool isRandom = true, bool isBlur = false, bool isGrayscale = false,
                 bool isMyPicks = false) {

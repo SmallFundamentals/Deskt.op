@@ -21,7 +21,7 @@ namespace Deskt.op.View
         private static readonly int PollingInterval = 1 * 60 * 60 * 1000; // 1hr in ms
 
         private readonly MaterialSkinManager materialSkinManager;
-        private readonly IWallpaperManager wallpaperManager;
+        private readonly UnsplashItWallpaperManager wallpaperManager;
         private delegate void AsyncSetWallpaper();
         private delegate void AsyncSetURI();
         private AsyncSetWallpaper delegateSetWallPaper;
@@ -31,11 +31,15 @@ namespace Deskt.op.View
 
         private System.Windows.Forms.Timer timer;
         private Uri uri;
+        private bool hasUnsavedChanges = false;
 
         public MainForm()
         {
             // API Call
-            wallpaperManager = new UnsplashItWallpaperManager(DesktopWallpaper.GetPrimaryScreenResolution());
+            wallpaperManager = new UnsplashItWallpaperManager(
+                DesktopWallpaper.GetPrimaryScreenResolution(), 
+                isBlur: Properties.Settings.Default.isBlur,
+                isGrayscale: Properties.Settings.Default.isGrayscale);
             delegateSetWallPaper = this.SetWallpaper;
             delegateSetURI = this.SetURI;
             setURIResult = delegateSetURI.BeginInvoke(null, null);
@@ -46,6 +50,7 @@ namespace Deskt.op.View
             this.Resize += MainForm_Resize;
             this.userWallpaperPictureBox.Image = wallpaperManager.GetUserWallpaper();
             this.materialTabControl.SelectedIndexChanged += materialTabControl_SelectedIndexChanged;
+            this.refreshIntervalTextField.KeyPress += refreshIntervalTextField_KeyPress;
             this.notifyIcon.ContextMenu = new ContextMenu();
             this.notifyIcon.ContextMenu.MenuItems.Add(new MenuItem("Refresh Wallpaper", contextMenu_RefreshWallpaper_Click));
             this.notifyIcon.ContextMenu.MenuItems.Add(new MenuItem("Exit Deskt.op", contextMenu_Exit_Click));
@@ -61,10 +66,35 @@ namespace Deskt.op.View
                 Accent.LightBlue200, 
                 TextShade.WHITE);
 
-            this.refreshIntervalTextField.Text = "   " + Properties.Settings.Default.fetchIntervalDays.ToString();
-            this.materialCheckBox1.Checked = Properties.Settings.Default.isRunOnStartup;
+            this.LoadPreferences();
 
             SetTimer();
+        }
+
+        private void LoadPreferences()
+        {
+            this.refreshIntervalTextField.Text = "   " + Properties.Settings.Default.fetchIntervalDays.ToString();
+            this.isBlurCheckBox.Checked = Properties.Settings.Default.isBlur;
+            this.isGrayscaleCheckBox.Checked = Properties.Settings.Default.isGrayscale;
+            this.isRunOnStartupCheckBox.Checked = Properties.Settings.Default.isRunOnStartup;
+        }
+
+        private void UpdateSavedStatusIfNecessary(bool hasChanges)
+        {
+            /*
+            if (hasChanges && !this.hasUnsavedChanges)
+            {
+                this.tabPage2.Text += "*";
+                this.materialTabControl.Refresh();
+                this.hasUnsavedChanges = true;
+            }
+            else if (!hasChanges && this.hasUnsavedChanges)
+            {
+                var oldName = this.tabPage2.Text;
+                this.tabPage2.Text = oldName.Substring(0, oldName.Length-1);
+                this.hasUnsavedChanges = false;
+            }
+            */
         }
 
         /* Summary: 
@@ -323,6 +353,7 @@ namespace Deskt.op.View
          */
         private void refreshIntervalTextField_KeyPress(object sender, KeyPressEventArgs e)
         {
+            Console.WriteLine("PRESSED");
             if (!char.IsControl(e.KeyChar) && !char.IsDigit(e.KeyChar) && (e.KeyChar != '.'))
             {
                 e.Handled = true;
@@ -333,6 +364,8 @@ namespace Deskt.op.View
             {
                 e.Handled = true;
             }
+
+            UpdateSavedStatusIfNecessary(true);
         }
 
         /* Summary: 
@@ -351,17 +384,29 @@ namespace Deskt.op.View
         private void saveSettingsButton_Click(object sender, EventArgs e)
         {
             double intervalInDays = Convert.ToDouble(this.refreshIntervalTextField.Text);
-            bool runOnStartup = this.materialCheckBox1.Checked;
+            bool isBlur = this.isBlurCheckBox.Checked;
+            bool isGrayscale = this.isGrayscaleCheckBox.Checked;
+            bool isRunOnStartup = this.isRunOnStartupCheckBox.Checked;
 
             SetTimer();
 
             // Save startup settings to registry
-            SetRunOnStartup(runOnStartup);
+            SetRunOnStartup(isRunOnStartup);
+
+            wallpaperManager.isBlur = isBlur;
+            wallpaperManager.isGrayscale = isGrayscale;
+
+            setURIResult = delegateSetURI.BeginInvoke(null, null);
 
             Properties.Settings.Default.fetchIntervalDays = intervalInDays;
-            Properties.Settings.Default.isRunOnStartup = runOnStartup;
+            Properties.Settings.Default.isBlur = isBlur;
+            Properties.Settings.Default.isGrayscale = isGrayscale;
+            Properties.Settings.Default.isRunOnStartup = isRunOnStartup;
             Properties.Settings.Default.nextWallpaperChangeDateTime = DateTime.Now.AddDays(intervalInDays);
+            Console.Write("Next wallpaper change will occur: ");
+            Console.WriteLine(Properties.Settings.Default.nextWallpaperChangeDateTime);
             Properties.Settings.Default.Save();
+            UpdateSavedStatusIfNecessary(false);
         }
 
         /* Summary: 
@@ -393,6 +438,12 @@ namespace Deskt.op.View
         private void contextMenu_Exit_Click(object sender, EventArgs e)
         {
             Application.Exit();
+        }
+
+        private void resetSettingsButton_Click(object sender, EventArgs e)
+        {
+            this.LoadPreferences();
+            UpdateSavedStatusIfNecessary(false);
         }
     }
 }

@@ -36,7 +36,10 @@
             this.tabPage1 = new System.Windows.Forms.TabPage();
             this.userWallpaperPictureBox = new System.Windows.Forms.PictureBox();
             this.tabPage2 = new System.Windows.Forms.TabPage();
-            this.materialCheckBox1 = new MaterialSkin.Controls.MaterialCheckBox();
+            this.isGrayscaleCheckBox = new MaterialSkin.Controls.MaterialCheckBox();
+            this.isBlurCheckBox = new MaterialSkin.Controls.MaterialCheckBox();
+            this.resetSettingsButton = new MaterialSkin.Controls.MaterialRaisedButton();
+            this.isRunOnStartupCheckBox = new MaterialSkin.Controls.MaterialCheckBox();
             this.saveSettingsButton = new MaterialSkin.Controls.MaterialRaisedButton();
             this.materialLabel3 = new MaterialSkin.Controls.MaterialLabel();
             this.materialLabel2 = new MaterialSkin.Controls.MaterialLabel();
@@ -113,7 +116,10 @@
             // tabPage2
             // 
             this.tabPage2.BackColor = System.Drawing.Color.WhiteSmoke;
-            this.tabPage2.Controls.Add(this.materialCheckBox1);
+            this.tabPage2.Controls.Add(this.isGrayscaleCheckBox);
+            this.tabPage2.Controls.Add(this.isBlurCheckBox);
+            this.tabPage2.Controls.Add(this.resetSettingsButton);
+            this.tabPage2.Controls.Add(this.isRunOnStartupCheckBox);
             this.tabPage2.Controls.Add(this.saveSettingsButton);
             this.tabPage2.Controls.Add(this.materialLabel3);
             this.tabPage2.Controls.Add(this.materialLabel2);
@@ -125,28 +131,75 @@
             this.tabPage2.TabIndex = 1;
             this.tabPage2.Text = "Settings";
             // 
-            // materialCheckBox1
+            // isGrayscaleCheckBox
             // 
-            this.materialCheckBox1.AutoSize = true;
-            this.materialCheckBox1.Depth = 0;
-            this.materialCheckBox1.Font = new System.Drawing.Font("Roboto", 10F);
-            this.materialCheckBox1.Location = new System.Drawing.Point(242, 151);
-            this.materialCheckBox1.Margin = new System.Windows.Forms.Padding(0);
-            this.materialCheckBox1.MouseLocation = new System.Drawing.Point(-1, -1);
-            this.materialCheckBox1.MouseState = MaterialSkin.MouseState.HOVER;
-            this.materialCheckBox1.Name = "materialCheckBox1";
-            this.materialCheckBox1.Ripple = true;
-            this.materialCheckBox1.Size = new System.Drawing.Size(121, 30);
-            this.materialCheckBox1.TabIndex = 6;
-            this.materialCheckBox1.Text = "Run on Startup";
-            this.materialCheckBox1.UseVisualStyleBackColor = true;
+            this.isGrayscaleCheckBox.AutoSize = true;
+            this.isGrayscaleCheckBox.Depth = 0;
+            this.isGrayscaleCheckBox.Font = new System.Drawing.Font("Roboto", 10F);
+            this.isGrayscaleCheckBox.Location = new System.Drawing.Point(225, 129);
+            this.isGrayscaleCheckBox.Margin = new System.Windows.Forms.Padding(0);
+            this.isGrayscaleCheckBox.MouseLocation = new System.Drawing.Point(-1, -1);
+            this.isGrayscaleCheckBox.MouseState = MaterialSkin.MouseState.HOVER;
+            this.isGrayscaleCheckBox.Name = "isGrayscaleCheckBox";
+            this.isGrayscaleCheckBox.Ripple = true;
+            this.isGrayscaleCheckBox.Size = new System.Drawing.Size(115, 30);
+            this.isGrayscaleCheckBox.TabIndex = 9;
+            this.isGrayscaleCheckBox.Text = "Black & White";
+            this.isGrayscaleCheckBox.UseVisualStyleBackColor = true;
+            // 
+            // isBlurCheckBox
+            // 
+            this.isBlurCheckBox.AutoSize = true;
+            this.isBlurCheckBox.Depth = 0;
+            this.isBlurCheckBox.Font = new System.Drawing.Font("Roboto", 10F);
+            this.isBlurCheckBox.Location = new System.Drawing.Point(225, 104);
+            this.isBlurCheckBox.Margin = new System.Windows.Forms.Padding(0);
+            this.isBlurCheckBox.MouseLocation = new System.Drawing.Point(-1, -1);
+            this.isBlurCheckBox.MouseState = MaterialSkin.MouseState.HOVER;
+            this.isBlurCheckBox.Name = "isBlurCheckBox";
+            this.isBlurCheckBox.Ripple = true;
+            this.isBlurCheckBox.Size = new System.Drawing.Size(55, 30);
+            this.isBlurCheckBox.TabIndex = 8;
+            this.isBlurCheckBox.Text = "Blur";
+            this.isBlurCheckBox.UseVisualStyleBackColor = true;
+            // 
+            // resetSettingsButton
+            // 
+            this.resetSettingsButton.Anchor = System.Windows.Forms.AnchorStyles.None;
+            this.resetSettingsButton.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.resetSettingsButton.Depth = 0;
+            this.resetSettingsButton.Location = new System.Drawing.Point(306, 221);
+            this.resetSettingsButton.MouseState = MaterialSkin.MouseState.HOVER;
+            this.resetSettingsButton.Name = "resetSettingsButton";
+            this.resetSettingsButton.Primary = true;
+            this.resetSettingsButton.Size = new System.Drawing.Size(75, 23);
+            this.resetSettingsButton.TabIndex = 7;
+            this.resetSettingsButton.Text = "RESET";
+            this.resetSettingsButton.UseVisualStyleBackColor = true;
+            this.resetSettingsButton.Click += new System.EventHandler(this.resetSettingsButton_Click);
+            // 
+            // isRunOnStartupCheckBox
+            // 
+            this.isRunOnStartupCheckBox.AutoSize = true;
+            this.isRunOnStartupCheckBox.Depth = 0;
+            this.isRunOnStartupCheckBox.Font = new System.Drawing.Font("Roboto", 10F);
+            this.isRunOnStartupCheckBox.Location = new System.Drawing.Point(224, 186);
+            this.isRunOnStartupCheckBox.Margin = new System.Windows.Forms.Padding(0);
+            this.isRunOnStartupCheckBox.MouseLocation = new System.Drawing.Point(-1, -1);
+            this.isRunOnStartupCheckBox.MouseState = MaterialSkin.MouseState.HOVER;
+            this.isRunOnStartupCheckBox.Name = "isRunOnStartupCheckBox";
+            this.isRunOnStartupCheckBox.Ripple = true;
+            this.isRunOnStartupCheckBox.Size = new System.Drawing.Size(121, 30);
+            this.isRunOnStartupCheckBox.TabIndex = 6;
+            this.isRunOnStartupCheckBox.Text = "Run on Startup";
+            this.isRunOnStartupCheckBox.UseVisualStyleBackColor = true;
             // 
             // saveSettingsButton
             // 
             this.saveSettingsButton.Anchor = System.Windows.Forms.AnchorStyles.None;
             this.saveSettingsButton.Cursor = System.Windows.Forms.Cursors.Hand;
             this.saveSettingsButton.Depth = 0;
-            this.saveSettingsButton.Location = new System.Drawing.Point(265, 227);
+            this.saveSettingsButton.Location = new System.Drawing.Point(225, 221);
             this.saveSettingsButton.MouseState = MaterialSkin.MouseState.HOVER;
             this.saveSettingsButton.Name = "saveSettingsButton";
             this.saveSettingsButton.Primary = true;
@@ -162,7 +215,7 @@
             this.materialLabel3.Depth = 0;
             this.materialLabel3.Font = new System.Drawing.Font("Roboto", 11F);
             this.materialLabel3.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(222)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
-            this.materialLabel3.Location = new System.Drawing.Point(208, 111);
+            this.materialLabel3.Location = new System.Drawing.Point(206, 73);
             this.materialLabel3.MouseState = MaterialSkin.MouseState.HOVER;
             this.materialLabel3.Name = "materialLabel3";
             this.materialLabel3.Size = new System.Drawing.Size(99, 19);
@@ -175,7 +228,7 @@
             this.materialLabel2.Depth = 0;
             this.materialLabel2.Font = new System.Drawing.Font("Roboto", 11F);
             this.materialLabel2.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(222)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
-            this.materialLabel2.Location = new System.Drawing.Point(357, 111);
+            this.materialLabel2.Location = new System.Drawing.Point(355, 73);
             this.materialLabel2.MouseState = MaterialSkin.MouseState.HOVER;
             this.materialLabel2.Name = "materialLabel2";
             this.materialLabel2.Size = new System.Drawing.Size(50, 19);
@@ -187,7 +240,7 @@
             this.refreshIntervalTextField.Cursor = System.Windows.Forms.Cursors.Arrow;
             this.refreshIntervalTextField.Depth = 0;
             this.refreshIntervalTextField.Hint = "   1";
-            this.refreshIntervalTextField.Location = new System.Drawing.Point(313, 107);
+            this.refreshIntervalTextField.Location = new System.Drawing.Point(311, 69);
             this.refreshIntervalTextField.MouseState = MaterialSkin.MouseState.HOVER;
             this.refreshIntervalTextField.Name = "refreshIntervalTextField";
             this.refreshIntervalTextField.Padding = new System.Windows.Forms.Padding(330, 330, 33, 0);
@@ -327,6 +380,9 @@
         private MaterialSkin.Controls.MaterialLabel materialLabel2;
         private MaterialSkin.Controls.MaterialRaisedButton saveSettingsButton;
         private MaterialSkin.Controls.MaterialLabel materialLabel3;
-        private MaterialSkin.Controls.MaterialCheckBox materialCheckBox1;
+        private MaterialSkin.Controls.MaterialCheckBox isRunOnStartupCheckBox;
+        private MaterialSkin.Controls.MaterialRaisedButton resetSettingsButton;
+        private MaterialSkin.Controls.MaterialCheckBox isGrayscaleCheckBox;
+        private MaterialSkin.Controls.MaterialCheckBox isBlurCheckBox;
     }
 }

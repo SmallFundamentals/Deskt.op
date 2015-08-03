@@ -9,7 +9,19 @@
       <Value Profile="(Default)">False</Value>
     </Setting>
     <Setting Name="nextWallpaperChangeDateTime" Type="System.DateTime" Scope="User">
-      <Value Profile="(Default)">2999-01-01</Value>
+      <Value Profile="(Default)">3000-01-01</Value>
+    </Setting>
+    <Setting Name="isRandom" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">True</Value>
+    </Setting>
+    <Setting Name="isBlur" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">False</Value>
+    </Setting>
+    <Setting Name="isGrayscale" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">False</Value>
+    </Setting>
+    <Setting Name="isExitOnClose" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">False</Value>
     </Setting>
   </Settings>
 </SettingsFile>
